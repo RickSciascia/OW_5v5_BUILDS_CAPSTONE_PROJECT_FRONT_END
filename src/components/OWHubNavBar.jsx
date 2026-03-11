@@ -7,11 +7,11 @@ function OWHubNavBar() {
   return (
     <Navbar expand="md" bg="primary" data-bs-theme="dark" fixed="top">
       <Container fluid>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="main-menu" />
         <Link to="/" className="navbar-brand">
           Overwatch Heroes Hub
         </Link>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse id="main-menu">
           <Nav className="me-auto">
             <Link className="nav-link" to="/">
               Home
@@ -27,14 +27,17 @@ function OWHubNavBar() {
             </Link>
           </Nav>
         </Navbar.Collapse>
-        <Nav>
-          <Link className="nav-link" to="/login">
-            Accedi
-          </Link>
-          <Link className="nav-link" to="/register">
-            Registrati
-          </Link>
-        </Nav>
+        <Navbar.Collapse id="account-menu">
+          <Nav className="ms-auto">
+            <Link className="nav-link" to="/login">
+              Accedi
+            </Link>
+            <Link className="nav-link" to="/register">
+              Registrati
+            </Link>
+          </Nav>
+        </Navbar.Collapse>
+        <Navbar.Toggle aria-controls="account-menu" />
       </Container>
     </Navbar>
   );

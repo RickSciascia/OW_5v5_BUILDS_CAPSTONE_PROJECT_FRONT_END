@@ -4,6 +4,7 @@ import "./App.css";
 import OWHubNavBar from "./components/OWHubNavBar";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
+import HeroGallery from "./components/HeroGallery";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <OWHubNavBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/gallery" />
+          <Route path="/gallery" element={<HeroGallery />} />
           <Route path="/builds" />
           <Route path="/login" />
           <Route path="/register" />
