@@ -1,11 +1,12 @@
 import { Container, Row, Col } from "react-bootstrap";
+import { useEffect } from "react";
 
 function Home() {
+  useEffect(() => {
+    document.title = "Overwatch Heroes Hub - Home";
+  }, []);
   return (
     <>
-      <head>
-        <title>Overwatch Heroes Hub - Home</title>
-      </head>
       <Container fluid className="min-vh-100">
         <Row className="my-3">
           <Col>

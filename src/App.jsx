@@ -9,9 +9,6 @@ import HeroGallery from "./components/HeroGallery";
 function App() {
   return (
     <>
-      <head>
-        <title>Overwatch Heroes Hub</title>
-      </head>
       <BrowserRouter>
         <OWHubNavBar />
         <Routes>
