@@ -18,7 +18,7 @@ function Footer() {
             <Link to="/tos" className="nav-link">
               Termini di Servizio
             </Link>
-            <Link to="privacy" className="nav-link">
+            <Link to="/privacy" className="nav-link">
               Privacy Policy
             </Link>
           </Nav>
