@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <>
-      <Navbar expand="md" bg="primary" data-bs-theme="dark">
+      <Navbar expand="md" bg="warning" data-bs-theme="light">
         <Container>
           <Nav>
             <Link className="navbar-brand" to="/">
@@ -24,11 +24,11 @@ function Footer() {
           </Nav>
         </Container>
       </Navbar>
-      <Container fluid className="text-center bg-primary py-3">
-        <p className="text-light">
+      <Container fluid className="text-center bg-warning py-3">
+        <p className="text-dark">
           COPYRIGHT© RICCARDO SCIASCIA 2026 - ALL RIGHTS RESERVED
         </p>
-        <p className="text-light">
+        <p className="text-dark">
           NON AFFILIATO con Blizzard Entertainment, Inc. <br />
           Overwatch è un marchio registrato di Blizzard Entertainment, Inc.
           <br />

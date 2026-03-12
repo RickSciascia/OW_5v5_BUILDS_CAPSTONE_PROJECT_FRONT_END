@@ -1,8 +1,6 @@
 body {
   padding-top: 56px;
 }
-/* 
-.heroCardSize {
-  max-width: 198px;
-  max-height: 226px;
-} */
+.hero-image {
+  max-height: 550px;
+}

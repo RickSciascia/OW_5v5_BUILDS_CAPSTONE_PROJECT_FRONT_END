@@ -7,8 +7,8 @@ function Home() {
   }, []);
   return (
     <>
-      <Container fluid className="min-vh-100">
-        <Row className="my-3">
+      <Container fluid className="min-vh-100 bg-dark text-white">
+        <Row className="py-3">
           <Col>
             <h1 className="text-center">
               Benvenuti <br /> su Overwatch Heroes Hub
@@ -23,7 +23,7 @@ function Home() {
             </p>
           </Col>
         </Row>
-        <Row className="my-3 text-center">
+        <Row className="py-3 text-center">
           <Col xs={12} md={6}>
             <h3>Galleria Eroi</h3>
             <p>
@@ -35,7 +35,7 @@ function Home() {
             <p>IMMAGINE QUI</p>
           </Col>
         </Row>
-        <Row className="my-3 text-center">
+        <Row className="py-3 text-center">
           <Col xs={12} md={6}>
             <h3>IMMAGINE Build Eroi</h3>
             <p>IMMAGINE QUI</p>

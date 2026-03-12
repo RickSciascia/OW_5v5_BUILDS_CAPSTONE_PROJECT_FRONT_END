@@ -36,20 +36,20 @@ function HeroGallery() {
 
   return (
     <>
-      <Container className="min-vh-100">
-        <h4 className="mt-3 text-center">
+      <Container fluid className="min-vh-100 bg-dark text-white">
+        <h4 className="pt-3 text-center">
           {" "}
           Clicca su un eroe per vedere i suoi dettagli e le build della
           community!
         </h4>
         {error && (
           <Container fluid>
-            <p className="text-white text-center">
+            <p className="text-center">
               Errore nel caricamento degli eroi! - riprova più tardi
             </p>
           </Container>
         )}
-        <Row className="g-3 my-3 justify-content-center">
+        <Row className="g-3 py-3 justify-content-center">
           <Col xs={12}>
             <h2 className="text-center">TANK</h2>
           </Col>
@@ -65,7 +65,7 @@ function HeroGallery() {
               <HeroMinCard key={hero.id} hero={hero} />
             ))}
         </Row>
-        <Row className="g-3 my-3 justify-content-center">
+        <Row className="g-3 py-3 justify-content-center">
           <Col xs={12}>
             <h2 className="text-center">ATTACCO</h2>
           </Col>
@@ -81,7 +81,7 @@ function HeroGallery() {
               <HeroMinCard key={hero.id} hero={hero} />
             ))}
         </Row>
-        <Row className="g-3 my-3 justify-content-center">
+        <Row className="g-3 py-3 justify-content-center">
           <Col xs={12}>
             <h2 className="text-center">SUPPORTO</h2>
           </Col>
@@ -98,7 +98,6 @@ function HeroGallery() {
             ))}
         </Row>
       </Container>
-      ;
     </>
   );
 }

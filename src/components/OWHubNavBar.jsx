@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function OWHubNavBar() {
   return (
-    <Navbar expand="md" bg="primary" data-bs-theme="dark" fixed="top">
+    <Navbar expand="md" bg="warning" data-bs-theme="light" fixed="top">
       <Container fluid>
         <Navbar.Toggle aria-controls="main-menu" />
         <Link to="/" className="navbar-brand">
@@ -19,7 +19,7 @@ function OWHubNavBar() {
             <Link className="nav-link" to="/gallery">
               Galleria Eroi
             </Link>
-            <Link className="nav-link" to="/builds">
+            <Link className="nav-link" to="">
               Build Eroi
             </Link>
             <Link className="nav-link" to="/backoffice">
