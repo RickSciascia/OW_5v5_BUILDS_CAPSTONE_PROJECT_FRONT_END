@@ -42,7 +42,7 @@ function HeroDetailsPage() {
     if (hero?.name) {
       document.title = `Overwatch Heroes Hub | ${hero.name}`;
     }
-  });
+  }, [hero]);
 
   return (
     <>

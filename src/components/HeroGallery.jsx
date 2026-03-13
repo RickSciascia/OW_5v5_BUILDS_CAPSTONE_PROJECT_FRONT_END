@@ -54,9 +54,9 @@ function HeroGallery() {
             <h2 className="text-center">TANK</h2>
           </Col>
           {loading && (
-            <div className="text-center text-primary">
-              <Spinner animation="border" variant="primary"></Spinner>
-              <p>Loading</p>
+            <div className="text-center text-warning">
+              <Spinner animation="border" variant="warning" />
+              <p>Caricamento...</p>
             </div>
           )}
           {heroes
@@ -70,9 +70,9 @@ function HeroGallery() {
             <h2 className="text-center">ATTACCO</h2>
           </Col>
           {loading && (
-            <div className="text-center text-primary">
-              <Spinner animation="border" variant="primary"></Spinner>
-              <p>Loading</p>
+            <div className="text-center text-warning">
+              <Spinner animation="border" variant="warning" />
+              <p>Caricamento...</p>
             </div>
           )}
           {heroes
@@ -86,9 +86,9 @@ function HeroGallery() {
             <h2 className="text-center">SUPPORTO</h2>
           </Col>
           {loading && (
-            <div className="text-center text-primary">
-              <Spinner animation="border" variant="primary"></Spinner>
-              <p>Loading</p>
+            <div className="text-center text-warning">
+              <Spinner animation="border" variant="warning" />
+              <p>Caricamento...</p>
             </div>
           )}
           {heroes

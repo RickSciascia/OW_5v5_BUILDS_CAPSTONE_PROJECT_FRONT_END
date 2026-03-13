@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Footer from "./components/Footer";
 import HeroGallery from "./components/HeroGallery";
 import HeroDetailsPage from "./components/HeroDetailsPage";
+import LoginPage from "./components/LoginPage";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<HeroGallery />} />
           <Route path="/gallery/heroes/:heroId" element={<HeroDetailsPage />} />
-          <Route path="/login" />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" />
         </Routes>
         <Footer />
