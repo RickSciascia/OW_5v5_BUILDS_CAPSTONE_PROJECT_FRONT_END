@@ -43,6 +43,7 @@ function LoginForm() {
   useEffect(() => {
     document.title = "Overwatch Heroes Hub | Accedi";
   }, []);
+
   return (
     <Form onSubmit={login}>
       <h2 className="pt-3 text-center">Accedi</h2>

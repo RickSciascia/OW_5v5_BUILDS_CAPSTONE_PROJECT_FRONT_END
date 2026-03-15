@@ -5,7 +5,7 @@ function LoginPage() {
   return (
     <Container
       fluid
-      className="bg-dark text-white py-3 min-vh-100 align-content-center"
+      className="bg-dark text-white min-vh-100 align-content-center"
     >
       <Row className="justify-content-center">
         <Link className="navbar-brand text-center fs-1" to={"/"}>
