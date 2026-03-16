@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import HeroGallery from "./components/HeroGallery";
 import HeroDetailsPage from "./components/HeroDetailsPage";
 import LoginPage from "./components/LoginPage";
+import Backoffice from "./components/Backoffice";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/gallery/heroes/:heroId" element={<HeroDetailsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" />
+          <Route path="/backoffice" element={<Backoffice />} />
         </Routes>
         <Footer />
       </BrowserRouter>
