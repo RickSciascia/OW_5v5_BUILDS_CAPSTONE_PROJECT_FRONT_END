@@ -19,11 +19,11 @@ function OWHubNavBar() {
             <Link className="nav-link" to="/gallery">
               Galleria Eroi
             </Link>
-            <Link className="nav-link" to="">
+            {/* <Link className="nav-link" to="">
               Build Eroi
-            </Link>
-            <Link className="nav-link" to="/backoffice">
-              Backoffice
+            </Link> */}
+            <Link className="nav-link" to="/manage-heroes">
+              Gestione Eroi
             </Link>
           </Nav>
         </Navbar.Collapse>

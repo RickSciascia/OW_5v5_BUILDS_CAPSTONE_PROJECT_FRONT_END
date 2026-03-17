@@ -7,20 +7,23 @@ import Footer from "./components/Footer";
 import HeroGallery from "./components/HeroGallery";
 import HeroDetailsPage from "./components/HeroDetailsPage";
 import LoginPage from "./components/LoginPage";
-import Backoffice from "./components/Backoffice";
+import ManageHeroes from "./components/ManageHeroes";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <OWHubNavBar />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<HeroGallery />} />
           <Route path="/gallery/heroes/:heroId" element={<HeroDetailsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" />
-          <Route path="/backoffice" element={<Backoffice />} />
+          <Route path="/manage-heroes" element={<ManageHeroes />} />
+          <Route path="/manage-heroes/:heroId" element={<ManageHeroes />} />
         </Routes>
         <Footer />
       </BrowserRouter>

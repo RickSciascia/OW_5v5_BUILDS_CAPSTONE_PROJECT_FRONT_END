@@ -1,11 +1,10 @@
 import { Container, Row, Col } from "react-bootstrap";
 import HeroForm from "./HeroForm";
-import { useEffect } from "react";
 
-function Backoffice() {
-  useEffect(() => {
-    document.title = `Overwatch Heroes Hub | Gestione Eroi`;
-  }, []);
+function ManageHeroes() {
+  // useEffect(() => {
+  //   document.title = `Overwatch Heroes Hub | Gestione Eroi`;
+  // }, []);
 
   return (
     <>
@@ -20,4 +19,4 @@ function Backoffice() {
   );
 }
 
-export default Backoffice;
+export default ManageHeroes;

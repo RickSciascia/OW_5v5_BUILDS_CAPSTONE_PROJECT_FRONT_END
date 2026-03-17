@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import WeaponCard from "./WeaponCard";
 import SkillCard from "./SkillCard";
@@ -84,6 +84,12 @@ function HeroDetailsPage() {
                   <h6 className="mb-1">
                     {hero.armor > 0 ? `Armatura: ${hero.armor}` : null}
                   </h6>
+                  <Link
+                    className="btn btn-outline-warning"
+                    to={`/manage-heroes/${heroId}`}
+                  >
+                    Modifica
+                  </Link>
                 </div>
               </Col>
 

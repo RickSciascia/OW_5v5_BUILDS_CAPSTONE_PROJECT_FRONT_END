@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Button, Form, Row, Col, Alert } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 
 function HeroForm() {
   const [heroData, setHeroData] = useState({
@@ -18,7 +18,10 @@ function HeroForm() {
     ultimates: [],
     passive: [],
   });
+  const [errors, setErrors] = useState({ message: "", list: [] });
   const navigate = useNavigate();
+  const { heroId } = useParams();
+  const isEditMode = !!heroId;
 
   const [databasePassive, setDatabasePassive] = useState([]);
 
@@ -33,8 +36,21 @@ function HeroForm() {
         setDatabasePassive(data);
       })
       .catch((e) => {
-        console.log("Errore nella fetch: ", e);
+        console.log("Errore nella fetch passive: ", e);
       });
+  };
+
+  const getHeroToEdit = () => {
+    const endpointHero = `http://localhost:3001/heroes/${heroId}`;
+    fetch(endpointHero)
+      .then((r) => {
+        if (r.ok) return r.json();
+        throw new Error("Eroe non trovato");
+      })
+      .then((data) => {
+        setHeroData(data);
+      })
+      .catch((err) => console.log("Errore nel recupero eroe: ", err));
   };
 
   const handleChange = (e) => {
@@ -238,6 +254,7 @@ function HeroForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrors({ message: "", list: [] });
 
     const heroDTO = {
       ...heroData,
@@ -275,33 +292,72 @@ function HeroForm() {
       passive: heroData.passive,
     };
 
-    const endpoint = "http://localhost:3001/heroes";
+    const endpoint = isEditMode
+      ? `http://localhost:3001/heroes/${heroId}`
+      : "http://localhost:3001/heroes";
+
+    const method = isEditMode ? "PUT" : "POST";
 
     fetch(endpoint, {
-      method: "POST",
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(heroDTO),
     })
-      .then((r) => {
+      .then(async (r) => {
         if (r.ok) {
-          alert("Eroe salvato correttamente!");
+          alert(isEditMode ? "Eroe aggiornato" : "Eroe salvato correttamente!");
           navigate("/gallery");
+        } else {
+          const response = await r.json();
+          if (response.errorsList) {
+            setErrors({ list: response.errorsList, message: response.message });
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            setErrors({ message: response.message });
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
         }
       })
       .catch((e) => {
-        console.log("Errore nella creazione eroe: ", e);
+        console.log("Errore nel salvataggio eroe: ", e);
+        alert(e.message);
       });
   };
 
   useEffect(() => {
-    document.title = "Overwatch Heroes Hub - Crea Nuovo Eroe";
     getPassive();
   }, []);
 
+  useEffect(() => {
+    if (isEditMode) {
+      getHeroToEdit();
+    }
+  }, [heroId, isEditMode]);
+
+  useEffect(() => {
+    if (isEditMode && heroData.name) {
+      document.title = `Overwatch Heroes Hub | Modifica ${heroData.name}`;
+    } else {
+      document.title = `Overwatch Heroes Hub | Crea Nuovo Eroe`;
+    }
+  }, [heroData.name, isEditMode]);
+
   return (
     <>
+      {errors.message && (
+        <Alert variant="danger">
+          {errors.message}
+          {errors.list && errors.list.length > 0 && (
+            <ul className="mt-2 mb-0">
+              {errors.list.map((e, index) => (
+                <li key={index}>{e}</li>
+              ))}
+            </ul>
+          )}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <h3>Informazioni Base Eroe:</h3>
         <Row>
