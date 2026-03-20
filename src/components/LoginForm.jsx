@@ -3,6 +3,8 @@ import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../redux/actions";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -10,6 +12,8 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
   const endpoint = "http://localhost:3001/auth/login";
   function login(e) {
     e.preventDefault();
@@ -30,7 +34,9 @@ function LoginForm() {
         else throw new Error("Errore nella response: " + r.status);
       })
       .then((data) => {
+        console.log(data);
         localStorage.setItem("token", data.accessToken);
+        dispatch(loginAction(data));
         navigate("/");
       })
       .catch((e) => {

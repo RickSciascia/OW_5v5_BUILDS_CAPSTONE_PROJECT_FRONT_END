@@ -4,3 +4,7 @@ body {
 .hero-image {
   max-height: 550px;
 }
+
+.navbar-profile-pic {
+  width: 30px;
+}

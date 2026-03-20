@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Row, Col, Alert } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 function HeroForm() {
@@ -22,12 +23,17 @@ function HeroForm() {
   const navigate = useNavigate();
   const { heroId } = useParams();
   const isEditMode = !!heroId;
+  const token = useSelector((state) => state.auth.token);
 
   const [databasePassive, setDatabasePassive] = useState([]);
 
   const getPassive = () => {
     const endpointPassive = "http://localhost:3001/passive";
-    fetch(endpointPassive)
+    fetch(endpointPassive, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((r) => {
         if (r.ok) return r.json();
         else throw new Error("Errore nella response: " + r.status);
@@ -302,6 +308,7 @@ function HeroForm() {
       method: method,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(heroDTO),
     })
@@ -370,6 +377,7 @@ function HeroForm() {
                 type="text"
                 value={heroData.name}
                 placeholder="es. D.va"
+                required
               />
             </Form.Group>
           </Col>
@@ -381,6 +389,7 @@ function HeroForm() {
                 onChange={handleChange}
                 name="role"
                 value={heroData.role}
+                required
                 aria-label="Ruolo Eroe"
               >
                 <option>Seleziona il ruolo dell'eroe!</option>
@@ -401,6 +410,7 @@ function HeroForm() {
                 name="hp"
                 type="number"
                 value={heroData.hp}
+                required
                 placeholder="inserisci i punti vita totali dell'eroe"
                 min={1}
               />
@@ -411,6 +421,7 @@ function HeroForm() {
                 onChange={handleChange}
                 name="health"
                 type="number"
+                required
                 value={heroData.health}
                 placeholder="inserisci i punti salute dell'eroe"
                 min={1}
@@ -424,6 +435,7 @@ function HeroForm() {
                 onChange={handleChange}
                 name="shield"
                 type="number"
+                required
                 value={heroData.shield}
                 placeholder="inserisci i punti scudo dell'eroe"
                 min={0}
@@ -436,6 +448,7 @@ function HeroForm() {
                 onChange={handleChange}
                 name="armor"
                 type="number"
+                required
                 value={heroData.armor}
                 placeholder="inserisci i punti armatura dell'eroe"
                 min={0}
@@ -449,6 +462,7 @@ function HeroForm() {
             onChange={handleChange}
             name="image"
             type="text"
+            required
             value={heroData.image}
             placeholder="inserisci il link della risorsa"
           />
@@ -459,6 +473,7 @@ function HeroForm() {
             onChange={handleChange}
             name="portraitImage"
             type="text"
+            required
             value={heroData.portraitImage}
             placeholder="inserisci il link della risorsa"
           />
@@ -489,6 +504,7 @@ function HeroForm() {
                     placeholder="es. Cannoni a fusione"
                     type="text"
                     name="name"
+                    required
                     value={weapon.name}
                     onChange={(e) => handleWeaponChange(index, e)}
                   />
@@ -501,6 +517,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Tipologia Arma"
                     type="text"
+                    required
                     name="weaponType"
                     value={weapon.weaponType}
                     onChange={(e) => handleWeaponChange(index, e)}
@@ -521,6 +538,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Armi automatiche a corto raggio e ampia rosata."
                     as="textarea"
+                    required
                     rows={2}
                     name="description"
                     value={weapon.description}
@@ -536,6 +554,7 @@ function HeroForm() {
                   <Form.Control
                     className="mb-2"
                     type="number"
+                    required
                     min={0}
                     step="any"
                     name="maxDmg"
@@ -550,6 +569,7 @@ function HeroForm() {
                   <Form.Control
                     className="mb-2"
                     type="number"
+                    required
                     min={0}
                     step="any"
                     name="minDmg"
@@ -564,6 +584,7 @@ function HeroForm() {
                   <Form.Control
                     className="mb-2"
                     type="text"
+                    required
                     placeholder="inserisci il link della risorsa"
                     name="weaponImage"
                     value={weapon.weaponImage}
@@ -602,6 +623,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Matrice Difensiva"
                     type="text"
+                    required
                     name="name"
                     value={skill.name}
                     onChange={(e) => handleSkillChange(index, e)}
@@ -615,6 +637,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Tempo di recupero in secondi"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="cooldown"
@@ -630,6 +653,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Blocca i proiettili nell area frontale"
                     as="textarea"
+                    required
                     rows={2}
                     name="description"
                     value={skill.description}
@@ -646,6 +670,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="numero di danni abilità se fa danni"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="damage"
@@ -661,6 +686,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="numero di cure abilità se può curare"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="healing"
@@ -676,6 +702,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Tempo di durata dell'abilità in secondi"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="duration"
@@ -691,6 +718,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Raggio di azione abilità"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="range"
@@ -709,6 +737,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="inserisci il link alla risorsa"
                     type="text"
+                    required
                     name="skillImage"
                     value={skill.skillImage}
                     onChange={(e) => handleSkillChange(index, e)}
@@ -746,6 +775,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Potere del coniglio"
                     type="text"
+                    required
                     name="name"
                     value={perk.name}
                     onChange={(e) => handlePerkChange(index, e)}
@@ -758,6 +788,7 @@ function HeroForm() {
                   <Form.Select
                     className="mb-2"
                     placeholder="Tipologia di perk"
+                    required
                     onChange={(e) => handlePerkChange(index, e)}
                     name="perkType"
                     value={perk.perkType}
@@ -775,6 +806,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Espulsione! fornisce 75 salute extra temporanea e l'area di danno di Richiama Mech aumenta del 50%."
                     as="textarea"
+                    required
                     rows={2}
                     name="description"
                     value={perk.description}
@@ -789,6 +821,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="inserisci il link alla risorsa"
                     type="text"
+                    required
                     name="perkImage"
                     value={perk.perkImage}
                     onChange={(e) => handlePerkChange(index, e)}
@@ -826,6 +859,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Autodistruzione"
                     type="text"
+                    required
                     name="name"
                     value={ultimate.name}
                     onChange={(e) => handleUltimateChange(index, e)}
@@ -839,6 +873,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="inserisci il costo della ultimate"
                     type="number"
+                    required
                     name="cost"
                     value={ultimate.cost}
                     onChange={(e) => handleUltimateChange(index, e)}
@@ -852,6 +887,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="es. Ti catapulti fuori dal mech, sovraccaricandolo e causandone l'esplosione poco dopo."
                     as="textarea"
+                    required
                     rows={2}
                     name="description"
                     value={ultimate.description}
@@ -868,6 +904,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="numero di danni ultimate se fa danni"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="damage"
@@ -883,6 +920,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="numero di cure ultimate se può curare"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="healing"
@@ -900,6 +938,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Tempo di durata dell'ultimate in secondi"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="duration"
@@ -915,6 +954,7 @@ function HeroForm() {
                     className="mb-2"
                     placeholder="Raggio di azione ultimate"
                     type="number"
+                    required
                     step="any"
                     min={0}
                     name="range"
@@ -929,6 +969,7 @@ function HeroForm() {
                   <Form.Control
                     className="mb-2"
                     type="text"
+                    required
                     placeholder="inserisci il link della risorsa"
                     name="ultimateImage"
                     value={ultimate.ultimateImage}
@@ -982,6 +1023,7 @@ function HeroForm() {
                   <Form.Label>Nome passiva (nuova)</Form.Label>
                   <Form.Control
                     name="name"
+                    required
                     value={passive.name}
                     onChange={(e) => handlePassiveChange(index, e)}
                     placeholder="es. Espulsione!"
@@ -995,6 +1037,7 @@ function HeroForm() {
                   <Form.Control
                     name="description"
                     as="textarea"
+                    required
                     rows={2}
                     value={passive.description}
                     onChange={(e) => handlePassiveChange(index, e)}
@@ -1008,6 +1051,7 @@ function HeroForm() {
                   <Form.Label>Immagine passiva (nuova)</Form.Label>
                   <Form.Control
                     name="passiveImage"
+                    required
                     value={passive.passiveImage}
                     onChange={(e) => handlePassiveChange(index, e)}
                     placeholder="inserisci il link della risorsa"

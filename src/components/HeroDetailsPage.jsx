@@ -6,12 +6,14 @@ import SkillCard from "./SkillCard";
 import UltimateCard from "./UltimateCard";
 import PassiveCard from "./PassiveCard";
 import PerkCard from "./PerkCard";
+import { useSelector } from "react-redux";
 
 function HeroDetailsPage() {
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const { heroId } = useParams();
+  const { userLogged } = useSelector((state) => state.auth);
   const endpoint = `http://localhost:3001/heroes/${heroId}`;
 
   const getHeroDetail = function () {
@@ -84,12 +86,14 @@ function HeroDetailsPage() {
                   <h6 className="mb-1">
                     {hero.armor > 0 ? `Armatura: ${hero.armor}` : null}
                   </h6>
-                  <Link
-                    className="btn btn-outline-warning"
-                    to={`/manage-heroes/${heroId}`}
-                  >
-                    Modifica
-                  </Link>
+                  {userLogged?.role === "ADMIN" && (
+                    <Link
+                      className="btn btn-outline-warning"
+                      to={`/manage-heroes/${heroId}`}
+                    >
+                      Modifica
+                    </Link>
+                  )}
                 </div>
               </Col>
 
