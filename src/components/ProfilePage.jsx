@@ -69,7 +69,10 @@ function ProfilePage() {
       <Row className="justify-content-center">
         <Col xs={12}>
           <Row>
-            <Col xs={12} md={4} className="text-end">
+            <Col xs={12} md={4} className="text-center d-md-none">
+              <img src={userLogged.image} className="w-50 rounded-circle" />
+            </Col>
+            <Col xs={12} md={4} className="text-end d-none d-md-block">
               <img src={userLogged.image} className="w-50 rounded-circle" />
             </Col>
             <Col xs={12} md={8} className="align-content-center">
