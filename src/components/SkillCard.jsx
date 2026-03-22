@@ -22,7 +22,11 @@ function SkillCard({ skill }) {
               <Card.Subtitle>
                 {skill.healing > 0 ? `Cure: ${skill.healing}` : null}
               </Card.Subtitle>
-              <Card.Subtitle>Durata: {skill.duration} secondi</Card.Subtitle>
+              <Card.Subtitle>
+                {skill.duration > 0
+                  ? `Durata: ${skill.duration} secondi`
+                  : null}
+              </Card.Subtitle>
               <Card.Subtitle>
                 {skill.range > 0 ? `Raggio Azione: ${skill.range}` : null}
               </Card.Subtitle>

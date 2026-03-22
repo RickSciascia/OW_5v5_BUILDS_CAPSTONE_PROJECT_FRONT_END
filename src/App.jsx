@@ -14,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { setUserAction } from "./redux/actions";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RegistrationPage from "./components/RegistrationPage";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
   const [initialLoading, setInitialLoading] = useState(true);
@@ -75,17 +77,22 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-
         <OWHubNavBar />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<HeroGallery />} />
           <Route path="/gallery/heroes/:heroId" element={<HeroDetailsPage />} />
-          <Route path="/register" />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute roleRequired={"USER"}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/manage-heroes"
             element={
