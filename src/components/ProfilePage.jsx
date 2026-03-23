@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { setUserAction } from "../redux/actions/index";
+import BuildCard from "./BuildCard";
 
 function ProfilePage() {
   const { userLogged } = useSelector((state) => state.auth);
@@ -19,7 +20,62 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setErrors] = useState("");
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+
+  // MY BUILDS
+  const [myBuilds, setMyBuilds] = useState([]);
+  const [loadingBuilds, setLoadingBuilds] = useState(true);
+  const myBuildsEndpoint = "http://localhost:3001/builds/me";
+  // PAGINAZIONE BUILD
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(0);
+  const [isLastPage, setIsLastPage] = useState(false);
+
+  const getMyBuilds = function (pageNumber = 0, append = false) {
+    if (append) setLoadingMore(true);
+    else setLoadingBuilds(true);
+
+    fetch(`${myBuildsEndpoint}?page=${pageNumber}&size=3`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((r) => {
+        if (r.ok) return r.json();
+        else throw new Error("Errore nel caricamento delle build utente");
+      })
+      .then((data) => {
+        if (append) {
+          setMyBuilds((prev) => [...prev, ...data.content]);
+        } else {
+          setMyBuilds(data.content);
+        }
+        setIsLastPage(data.last);
+        setPage(data.number);
+      })
+      .catch((e) => console.log("Errore fetch delle build utente: ", e))
+      .finally(() => {
+        setLoadingBuilds(false);
+        setLoadingMore(false);
+      });
+  };
+
+  const handleDelete = function (buildId) {
+    const buildDeleteEndpoint = `http://localhost:3001/builds/${buildId}`;
+    if (window.confirm("Sei sicuro di voler eliminare questa build?")) {
+      fetch(buildDeleteEndpoint, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((r) => {
+          if (r.ok) {
+            setMyBuilds((prev) => prev.filter((b) => b.id !== buildId));
+          } else throw new Error("Errore durante l'eliminazione della build!");
+        })
+        .catch((e) => alert(e.message));
+    }
+  };
 
   const handleUsernamePatch = function (e) {
     e.preventDefault();
@@ -63,6 +119,18 @@ function ProfilePage() {
       document.title = `Overwatch Heroes Hub | Profilo di ${userLogged.username}`;
     }
   }, [userLogged]);
+
+  useEffect(() => {
+    const initPage = async () => {
+      try {
+        getMyBuilds(0, false);
+      } catch (err) {
+        console.error("Errore inizializzazione: ", err);
+      }
+    };
+
+    initPage();
+  }, []);
 
   return (
     <Container fluid className="p-3 bg-dark text-white min-vh-100">
@@ -134,6 +202,56 @@ function ProfilePage() {
               <h6>Email: {userLogged.email}</h6>
             </Col>
           </Row>
+          <h3 className="text-center">Le tue build</h3>
+          {loadingBuilds ? (
+            <div className="text-center">
+              <Spinner animation="border" variant="warning" />
+              <p>Caricamento Build di {userLogged.username}...</p>
+            </div>
+          ) : myBuilds.length > 0 ? (
+            <>
+              <Row>
+                {myBuilds.map((b) => (
+                  <Col xs={12} key={b.id} className="g-3">
+                    <BuildCard
+                      build={b}
+                      onDelete={handleDelete}
+                      canDelete={true}
+                    />
+                  </Col>
+                ))}
+              </Row>
+              {!isLastPage && myBuilds.length > 0 && (
+                <Row className="justify-content-center mt-4">
+                  <Col xs="auto">
+                    <Button
+                      variant="outline-warning"
+                      disabled={loadingMore}
+                      onClick={() => getMyBuilds(page + 1, true)}
+                    >
+                      {loadingMore ? (
+                        <>
+                          <Spinner
+                            size="sm"
+                            animation="border"
+                            className="me-2"
+                          />
+                          Caricamento...
+                        </>
+                      ) : (
+                        "Carica Altre Build"
+                      )}
+                    </Button>
+                  </Col>
+                </Row>
+              )}
+            </>
+          ) : (
+            <p className="text-center">
+              Non hai ancora creato nessuna build. Vai nella galleria Eroi e
+              creane una per visualizzarle qui!
+            </p>
+          )}
         </Col>
       </Row>
     </Container>

@@ -8,6 +8,7 @@ const BuildCard = function ({ build, onDelete, canDelete }) {
           {build.name}
         </Card.Title>
         <div className="mt-3">
+          <h5>{build.heroName}</h5>
           <Card.Text className="small mb-2">
             Creato da: <span className="text-info">{build.username}</span>
             {canDelete && (
@@ -22,8 +23,20 @@ const BuildCard = function ({ build, onDelete, canDelete }) {
             )}
           </Card.Text>
 
-          <Row>
-            <Col xs={6}>
+          <Row className="justify-content-center">
+            <Col
+              xs={2}
+              className="d-flex d-none d-md-block align-content-center"
+            >
+              <div className="align-content-center">
+                <Card.Img
+                  src={build.heroPortrait}
+                  alt={build.heroName}
+                  className="border"
+                />
+              </div>
+            </Col>
+            <Col xs={5}>
               <Row className="d-flex">
                 <Col className=" text-center align-content-center">
                   <Badge bg="primary">MINOR</Badge>
@@ -39,7 +52,7 @@ const BuildCard = function ({ build, onDelete, canDelete }) {
                 </Col>
               </Row>
             </Col>
-            <Col xs={6}>
+            <Col xs={5}>
               <Row className="d-flex">
                 <Col className=" text-center align-content-center">
                   <Badge bg="primary">MAJOR</Badge>
