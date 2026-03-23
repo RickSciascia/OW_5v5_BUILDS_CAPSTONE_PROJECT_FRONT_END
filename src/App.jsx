@@ -42,11 +42,6 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // if (token) {
-    //   getMyProfile(token).finally(() => setInitialLoading(false));
-    // } else {
-    //   setInitialLoading(false);
-    // }
 
     const initializeApp = async () => {
       try {

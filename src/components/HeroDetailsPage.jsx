@@ -1,20 +1,39 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Spinner, Button, Form } from "react-bootstrap";
 import WeaponCard from "./WeaponCard";
 import SkillCard from "./SkillCard";
 import UltimateCard from "./UltimateCard";
 import PassiveCard from "./PassiveCard";
 import PerkCard from "./PerkCard";
+import BuildCard from "./BuildCard";
+
 import { useSelector } from "react-redux";
 
 function HeroDetailsPage() {
+  // Hero
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  // Build
+  const [builds, setBuilds] = useState([]);
+  const [loadingBuilds, setLoadingBuilds] = useState(true);
+
+  // Form Build
+  const [showForm, setShowForm] = useState(false);
+  const [newBuild, setNewBuild] = useState({
+    name: "",
+    majorPerkId: "",
+    minorPerkId: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { heroId } = useParams();
   const { userLogged } = useSelector((state) => state.auth);
   const endpoint = `http://localhost:3001/heroes/${heroId}`;
+  const buildsEndpoint = `http://localhost:3001/builds/hero/${heroId}`;
+  const buildCreationEndpoint = "http://localhost:3001/builds";
 
   const getHeroDetail = function () {
     fetch(endpoint)
@@ -35,8 +54,55 @@ function HeroDetailsPage() {
       });
   };
 
+  const getBuilds = function () {
+    fetch(buildsEndpoint)
+      .then((r) => {
+        if (r.ok) return r.json();
+        else throw new Error("Errore nel caricamento delle build");
+      })
+      .then((data) => {
+        setBuilds(data.content);
+      })
+      .catch((e) => console.log("Errore fetch delle build: ", e))
+      .finally(() => setLoadingBuilds(false));
+  };
+
+  const handleCreateBuild = function (e) {
+    e.preventDefault();
+    if (!newBuild.minorPerkId || !newBuild.majorPerkId) {
+      alert("Seleziona entrambi i perk per poter inviare una build!");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    fetch(buildCreationEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        name: newBuild.name,
+        heroId: hero.id,
+        minorPerkId: newBuild.minorPerkId,
+        majorPerkId: newBuild.majorPerkId,
+      }),
+    })
+      .then((r) => {
+        if (r.ok) {
+          setNewBuild({ name: "", minorPerkId: "", majorPerkId: "" });
+          setShowForm(false);
+          getBuilds();
+        } else throw new Error("Errore durante il salvataggio");
+      })
+      .catch((e) => alert(e.message))
+      .finally(() => setIsSubmitting(false));
+  };
+
   useEffect(() => {
     getHeroDetail();
+    getBuilds();
     document.title = `Overwatch Heroes Hub`;
   }, [heroId]);
 
@@ -132,11 +198,131 @@ function HeroDetailsPage() {
             </Row>
 
             <hr className="my-5" />
+            <Row>
+              <Col className=" text-center">
+                {userLogged && (
+                  <>
+                    <h2 className="text-center mb-3">Crea la tua build!</h2>
+                    <Button
+                      className="mb-3"
+                      variant={showForm ? "outline-light" : "warning"}
+                      onClick={() => setShowForm(!showForm)}
+                    >
+                      {showForm ? "Annulla" : "+ Crea Nuova Build"}
+                    </Button>
+                  </>
+                )}
+              </Col>
+            </Row>
+
+            {showForm && (
+              <Form
+                onSubmit={handleCreateBuild}
+                className="bg-dark p-4 rounded border border-secondary mb-5"
+              >
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nome della Build</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        value={newBuild.name}
+                        onChange={(e) =>
+                          setNewBuild({ ...newBuild, name: e.target.value })
+                        }
+                        placeholder="Es: Aggressive Tank"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Minor Perk</Form.Label>
+                      <Form.Select
+                        required
+                        value={newBuild.minorPerkId}
+                        onChange={(e) =>
+                          setNewBuild({
+                            ...newBuild,
+                            minorPerkId: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">Scegli...</option>
+                        {hero.perks
+                          .filter((p) => p.perkType === "MINOR")
+                          .map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.name}
+                            </option>
+                          ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Major Perk</Form.Label>
+                      <Form.Select
+                        required
+                        value={newBuild.majorPerkId}
+                        onChange={(e) =>
+                          setNewBuild({
+                            ...newBuild,
+                            majorPerkId: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">Scegli...</option>
+                        {hero.perks
+                          .filter((p) => p.perkType === "MAJOR")
+                          .map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.name}
+                            </option>
+                          ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  <Button
+                    className="w-50"
+                    variant="warning"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <Spinner size="sm" animation="border" />
+                    ) : (
+                      "Salva Build"
+                    )}
+                  </Button>
+                </Row>
+              </Form>
+            )}
 
             {/* Sezione Build Community */}
             <Row>
               <Col xs={12}>
                 <h2 className="text-center mb-4">Build della Community</h2>
+                {loadingBuilds ? (
+                  <div>
+                    <Spinner animation="border" variant="warning" />
+                    <p>Caricamento Builds in corso...</p>
+                  </div>
+                ) : builds.length > 0 ? (
+                  <Row>
+                    {builds.map((b) => (
+                      <Col xs={12} key={b.id} className="g-3">
+                        <BuildCard build={b} />
+                      </Col>
+                    ))}
+                  </Row>
+                ) : (
+                  <p className="text-center text-muted fst-italic">
+                    Nessuna build disponibile per questo eroe.
+                  </p>
+                )}
               </Col>
             </Row>
           </>
