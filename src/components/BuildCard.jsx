@@ -1,6 +1,6 @@
-import { Card, Badge, Row, Col } from "react-bootstrap";
+import { Card, Badge, Row, Col, Button } from "react-bootstrap";
 
-const BuildCard = function ({ build }) {
+const BuildCard = function ({ build, onDelete, canDelete }) {
   return (
     <Card className="bg-dark text-white border-secondary h-100 shadow">
       <Card.Body>
@@ -10,7 +10,18 @@ const BuildCard = function ({ build }) {
         <div className="mt-3">
           <Card.Text className="small mb-2">
             Creato da: <span className="text-info">{build.username}</span>
+            {canDelete && (
+              <Button
+                className="ms-3"
+                variant="outline-danger"
+                size="sm"
+                onClick={() => onDelete(build.id)}
+              >
+                Elimina
+              </Button>
+            )}
           </Card.Text>
+
           <Row>
             <Col xs={6}>
               <Row className="d-flex">

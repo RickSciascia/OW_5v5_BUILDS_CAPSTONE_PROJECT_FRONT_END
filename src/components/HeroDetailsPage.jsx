@@ -118,6 +118,24 @@ function HeroDetailsPage() {
       .finally(() => setIsSubmitting(false));
   };
 
+  const deleteBuild = function (buildId) {
+    const buildDeleteEndpoint = `http://localhost:3001/builds/${buildId}`;
+    if (window.confirm("Sei sicuro di voler eliminare questa build?")) {
+      fetch(buildDeleteEndpoint, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((r) => {
+          if (r.ok) {
+            setBuilds((prev) => prev.filter((b) => b.id !== buildId));
+          } else throw new Error("Errore durante l'eliminazione della build!");
+        })
+        .catch((e) => alert(e.message));
+    }
+  };
+
   useEffect(() => {
     const initPage = async () => {
       try {
@@ -341,7 +359,14 @@ function HeroDetailsPage() {
                     <Row>
                       {builds.map((b) => (
                         <Col xs={12} key={b.id} className="g-3">
-                          <BuildCard build={b} />
+                          <BuildCard
+                            build={b}
+                            onDelete={deleteBuild}
+                            canDelete={
+                              userLogged?.username === b.username ||
+                              userLogged?.role === "ADMIN"
+                            }
+                          />
                         </Col>
                       ))}
                     </Row>
