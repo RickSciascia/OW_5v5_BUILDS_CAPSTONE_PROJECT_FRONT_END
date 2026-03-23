@@ -20,6 +20,11 @@ function HeroDetailsPage() {
   const [builds, setBuilds] = useState([]);
   const [loadingBuilds, setLoadingBuilds] = useState(true);
 
+  // Paginazione Build
+  const [page, setPage] = useState(0);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+
   // Form Build
   const [showForm, setShowForm] = useState(false);
   const [newBuild, setNewBuild] = useState({
@@ -54,17 +59,29 @@ function HeroDetailsPage() {
       });
   };
 
-  const getBuilds = function () {
-    fetch(buildsEndpoint)
+  const getBuilds = function (pageNumber = 0, append = false) {
+    if (append) setLoadingMore(true);
+    else setLoadingBuilds(true);
+
+    fetch(`${buildsEndpoint}?page=${pageNumber}&size=3`)
       .then((r) => {
         if (r.ok) return r.json();
         else throw new Error("Errore nel caricamento delle build");
       })
       .then((data) => {
-        setBuilds(data.content);
+        if (append) {
+          setBuilds((prev) => [...prev, ...data.content]);
+        } else {
+          setBuilds(data.content);
+        }
+        setIsLastPage(data.last);
+        setPage(data.number);
       })
       .catch((e) => console.log("Errore fetch delle build: ", e))
-      .finally(() => setLoadingBuilds(false));
+      .finally(() => {
+        setLoadingBuilds(false);
+        setLoadingMore(false);
+      });
   };
 
   const handleCreateBuild = function (e) {
@@ -93,7 +110,8 @@ function HeroDetailsPage() {
         if (r.ok) {
           setNewBuild({ name: "", minorPerkId: "", majorPerkId: "" });
           setShowForm(false);
-          getBuilds();
+          setPage(0);
+          getBuilds(0, false);
         } else throw new Error("Errore durante il salvataggio");
       })
       .catch((e) => alert(e.message))
@@ -101,9 +119,17 @@ function HeroDetailsPage() {
   };
 
   useEffect(() => {
-    getHeroDetail();
-    getBuilds();
-    document.title = `Overwatch Heroes Hub`;
+    const initPage = async () => {
+      try {
+        await Promise.all([getHeroDetail(), getBuilds(0, false)]);
+        // document.title = `Overwatch Heroes Hub | ${hero?.name || ""}`;
+      } catch (err) {
+        console.error("Errore inizializzazione:", err);
+      }
+    };
+
+    initPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heroId]);
 
   useEffect(() => {
@@ -311,15 +337,41 @@ function HeroDetailsPage() {
                     <p>Caricamento Builds in corso...</p>
                   </div>
                 ) : builds.length > 0 ? (
-                  <Row>
-                    {builds.map((b) => (
-                      <Col xs={12} key={b.id} className="g-3">
-                        <BuildCard build={b} />
-                      </Col>
-                    ))}
-                  </Row>
+                  <>
+                    <Row>
+                      {builds.map((b) => (
+                        <Col xs={12} key={b.id} className="g-3">
+                          <BuildCard build={b} />
+                        </Col>
+                      ))}
+                    </Row>
+                    {!isLastPage && builds.length > 0 && (
+                      <Row className="justify-content-center mt-4">
+                        <Col xs="auto">
+                          <Button
+                            variant="outline-warning"
+                            disabled={loadingMore}
+                            onClick={() => getBuilds(page + 1, true)}
+                          >
+                            {loadingMore ? (
+                              <>
+                                <Spinner
+                                  size="sm"
+                                  animation="border"
+                                  className="me-2"
+                                />
+                                Caricamento...
+                              </>
+                            ) : (
+                              "Carica Altre Build"
+                            )}
+                          </Button>
+                        </Col>
+                      </Row>
+                    )}
+                  </>
                 ) : (
-                  <p className="text-center text-muted fst-italic">
+                  <p className="text-center">
                     Nessuna build disponibile per questo eroe.
                   </p>
                 )}
