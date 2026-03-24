@@ -52,7 +52,7 @@ function LoginForm() {
 
   return (
     <Form onSubmit={login}>
-      <h2 className="pt-3 text-center">Accedi</h2>
+      <h2 className="pt-0 text-center">Accedi</h2>
       <p className="text-center fs-5">
         Non hai un account?{" "}
         <Link className="text-white" to={"/register"}>

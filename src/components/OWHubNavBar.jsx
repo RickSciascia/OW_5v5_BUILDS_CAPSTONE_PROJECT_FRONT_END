@@ -5,6 +5,7 @@ import { NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAction } from "../redux/actions";
+import logoImage from "../assets/logoNoText.png";
 
 function OWHubNavBar() {
   const { userLogged } = useSelector((state) => state.auth);
@@ -21,7 +22,7 @@ function OWHubNavBar() {
       <Container fluid>
         <Navbar.Toggle aria-controls="main-menu" />
         <Link to="/" className="navbar-brand">
-          Overwatch Heroes Hub
+          <img src={logoImage} className="img-logo" />
         </Link>
         <Navbar.Collapse id="main-menu">
           <Nav className="me-auto">

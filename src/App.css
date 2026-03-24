@@ -8,3 +8,28 @@ body {
 .navbar-profile-pic {
   width: 30px;
 }
+
+.hero-gallery-img {
+  background-image: url("./assets/fvQljS.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 350px;
+}
+
+.heroes-hub-home-bg {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url("./assets/overwatch-2020-game-4k-6r.jpg");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  min-height: 350px;
+}
+
+.img-logo {
+  height: 40px;
+}
+
+.img-logo-text {
+  width: 256px;
+}

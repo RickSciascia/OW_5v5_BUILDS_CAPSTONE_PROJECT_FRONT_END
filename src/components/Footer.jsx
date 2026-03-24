@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
+import logoImage from "../assets/logoNoText.png";
 
 function Footer() {
   return (
@@ -10,7 +11,7 @@ function Footer() {
         <Container>
           <Nav>
             <Link className="navbar-brand" to="/">
-              Overwatch Heroes Hub
+              <img src={logoImage} className="img-logo" />
             </Link>
             <Link to="/contattaci" className="nav-link">
               Contattaci
