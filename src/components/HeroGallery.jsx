@@ -18,7 +18,6 @@ function HeroGallery() {
         }
       })
       .then((data) => {
-        console.log(data);
         setHeroes(data);
         setLoading(false);
       })

@@ -17,7 +17,6 @@ function LoginForm() {
   const endpoint = "http://localhost:3001/auth/login";
   function login(e) {
     e.preventDefault();
-    console.log("Invio i dati al server");
     setLoading(true);
 
     fetch(endpoint, {
@@ -34,13 +33,12 @@ function LoginForm() {
         else throw new Error("Errore nella response: " + r.status);
       })
       .then((data) => {
-        console.log(data);
         localStorage.setItem("token", data.accessToken);
         dispatch(loginAction(data));
         navigate("/");
       })
       .catch((e) => {
-        console.log("Errore :", e);
+        console.error("Errore :", e);
         setLoading(false);
         setError(e.message);
       });

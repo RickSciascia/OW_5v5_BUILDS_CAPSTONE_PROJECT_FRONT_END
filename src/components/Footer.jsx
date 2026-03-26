@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import logoImage from "../assets/logoNoText.png";
+import logoImage from "../assets/logo-ow-black-2.png";
 
 function Footer() {
   return (

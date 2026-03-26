@@ -48,7 +48,6 @@ function HeroDetailsPage() {
         } else throw new Error("Errore nella response : " + r.status);
       })
       .then((data) => {
-        console.log(data);
         setHero(data);
         setLoading(false);
       })

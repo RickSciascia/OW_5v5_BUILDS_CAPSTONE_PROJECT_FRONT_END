@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import OWHubNavBar from "./components/OWHubNavBar";
@@ -31,7 +32,6 @@ function App() {
         else throw new Error("Token scaduto o non valido");
       })
       .then((userData) => {
-        console.log(userData);
         dispatch(setUserAction(userData));
       })
       .catch((err) => {
