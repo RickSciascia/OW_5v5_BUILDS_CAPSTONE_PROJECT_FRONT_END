@@ -1,16 +1,37 @@
-# React + Vite
+# OVERWATCH HEROES HUB
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Progetto Companion Web App per videogioco Overwatch
 
-Currently, two official plugins are available:
+L'idea è quella di realizzare una companion app dove si trovano le statistiche degli eroi del videogioco Overwatch di Blizzard con le build per i personaggi da usare in 5v5.
+L'idea nasce dalla mia passione per gli sparatutto, recentemente navigando per il web cercavo un sito che mostrasse le build per i perk per il 5v5 tradizionale purtroppo però non sono riuscito a trovarne, incappando solo in siti che suggerivano build per la modalità Stadium.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+L'obiettivo è quello di realizzare un progetto che mi possa spingere a dare il meglio e che possa eventualmente dare un di più alla comunità ed eventualmente espanderlo con diverse sezioni in futuro.
 
-## React Compiler
+### Teconlogie utilizzate:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Front-End: JavaScript + React + Redux + Bootstrap
 
-## Expanding the ESLint configuration
+Back-End: Java & Spring e i suoi moduli con DB PostgreSQL
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### AVVIO PROGETTO
+Apri il terminale nella cartella del progetto Front-End scrivi il comando:
+
+npm i
+
+Aspetta che il terminale abbia installato tutte le dipendenze del progetto dopodiche scrivi il comando:
+
+npm run dev
+
+dopodichè CTRL+LMB su http://localhost:5173 aprirà automaticamente il Browser predefinito
+
+#### N.B.
+
+Il Front-End fa chiamate al Back-End sulla porta 3001 assicurati di aver impostato correttamente l'env.properties come indicato nel README della repo del progetto Back-End
+
+
+Il Front-End è impostato con porta 5173 per cambiare questo comportamente accedi al file SecurityConfig nella cartella security del progetto Back-End
+
+nel @Bean CorsConfigurationSource nel config.setAllowedOrigins(List.of("http://localhost:5173"));
+cambia la porta 5173 con la tua porta front-end eventualmente.
+
+Link alla repo per il Back-End: https://github.com/RickSciascia/OW_5v5_BUILDS_CAPSTONE_PROJECT
