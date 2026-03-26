@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Spinner, Button, Form } from "react-bootstrap";
 import WeaponCard from "./WeaponCard";
 import SkillCard from "./SkillCard";
@@ -11,6 +11,7 @@ import BuildCard from "./BuildCard";
 import { useSelector } from "react-redux";
 
 function HeroDetailsPage() {
+  const navigate = useNavigate();
   // Hero
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -117,6 +118,29 @@ function HeroDetailsPage() {
       .finally(() => setIsSubmitting(false));
   };
 
+  const deleteHero = function (heroId) {
+    const heroDeleteEndpoint = `http://localhost:3001/heroes/${heroId}`;
+    if (
+      window.confirm(
+        "Sei sicuro di voler eliminare questo eroe? L'azione è irreversibile",
+      )
+    ) {
+      fetch(heroDeleteEndpoint, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((r) => {
+          if (r.ok) {
+            alert("Eroe eliminato con successo!");
+            navigate("/gallery");
+          } else throw new Error("Errore durante l'eliminazione dell Eroe!");
+        })
+        .catch((e) => alert(e.message));
+    }
+  };
+
   const deleteBuild = function (buildId) {
     const buildDeleteEndpoint = `http://localhost:3001/builds/${buildId}`;
     if (window.confirm("Sei sicuro di voler eliminare questa build?")) {
@@ -139,7 +163,6 @@ function HeroDetailsPage() {
     const initPage = async () => {
       try {
         await Promise.all([getHeroDetail(), getBuilds(0, false)]);
-        // document.title = `Overwatch Heroes Hub | ${hero?.name || ""}`;
       } catch (err) {
         console.error("Errore inizializzazione:", err);
       }
@@ -202,6 +225,17 @@ function HeroDetailsPage() {
                     >
                       Modifica
                     </Link>
+                  )}
+                  {userLogged?.role === "ADMIN" && (
+                    <Button
+                      variant="danger"
+                      className="ms-3"
+                      onClick={() => {
+                        deleteHero(heroId);
+                      }}
+                    >
+                      Elimina
+                    </Button>
                   )}
                 </div>
               </Col>
